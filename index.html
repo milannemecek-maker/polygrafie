@@ -251,7 +251,7 @@ footer.wrap { padding-top: 2.5rem; font-size: .85rem; color: var(--muted); }
     <div class="intro">
       <h2>Sestav tiskovou specifikaci</h2>
       <div class="meta"><span class="pill">17 minut</span><span class="pill soft">ve dvojicích</span></div>
-      <p>Dostanete jednu tiskovinu. Vyberte její číslo, zapište k ní co nejpřesnější specifikaci a pak ji porovnejte se správným řešením. Gramáž stačí odhadem.</p>
+      <p>Dostanete jednu tiskovinu. Vyberte její číslo, zapište k ní co nejpřesnější specifikaci a pak ji porovnejte se správným řešením. Gramáž stačí odhadem. Náklad z tiskoviny poznat nejde, ten nevyplňujte.</p>
     </div>
     <div class="card" style="margin-top:1.25rem">
       <label class="field" for="sestavPick">Číslo vaší tiskoviny
@@ -404,7 +404,7 @@ footer.wrap { padding-top: 2.5rem; font-size: .85rem; color: var(--muted); }
     '18': { rows: [['formát', '225 × 300 mm (rozložené 450 × 300 mm)'], ['obálka', '4 strany, 300g ofset + lamino mat 1/0, tisk 4/4'], ['vnitřek', '200 stran, 120g ofset, tisk 4/4'], ['vazba', 'V2'], ['náklad', '1000 ks']],
       focus: 'Lepená vazba V2. Lamino jen na vnější straně obálky: 1/0.' }
   };
-  var SESTAV_TEMPLATE = 'formát: \nmateriál: \ntisk: \nsklad / vazba: \nrozsah: \nzušlechtění: \nnáklad: ';
+  var SESTAV_TEMPLATE = 'formát: \nmateriál: \ntisk: \nsklad: ';
 
   /* ---------- KRÁTKÝ TEST ---------- */
   var testBody = document.getElementById('testBody');
@@ -570,7 +570,7 @@ footer.wrap { padding-top: 2.5rem; font-size: .85rem; color: var(--muted); }
   Object.keys(SESTAV).forEach(function (k) { pick.appendChild(el('option', { value: k, text: 'Tiskovina ' + k })); });
   var text = document.getElementById('sestavText');
   var solBox = document.getElementById('sestavSolution');
-  var CHECKS = ['Formát, u skládaných a vázaných i rozložený', 'Materiál: natíraný, nebo nenatíraný papír', 'Barevnost líce i rubu', 'Sklad, nebo vazba a rozsah', 'Zušlechtění, pokud ho tiskovina má'];
+  var CHECKS = ['Formát, u skládaných i rozložený', 'Materiál: natíraný, nebo nenatíraný papír', 'Barevnost líce i rubu', 'Sklad: počet a způsob lomů, nebo že tiskovina skládaná není'];
   function loadSestav() {
     var k = pick.value;
     var saved = k ? store.get('sestav:text:' + k) : null;
