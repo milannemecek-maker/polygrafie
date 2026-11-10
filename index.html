@@ -1,0 +1,621 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cvičení ze Základů polygrafie</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300..700&display=swap">
+<style>
+/* Layout: jedna čitelná kolona jako pracovní list; nahoře lepicí záložky čtyř cvičení. Stejná identita jako prezentace přednášek. */
+:root {
+  --bg: #FAF9F5;
+  --card: #EFEDE6;
+  --paper: #FFFDF7;
+  --line: #DAD6CC;
+  --fg: #1C1B19;
+  --body: #3D3A35;
+  --muted: #6B675F;
+  --accent: #F2C31B;
+  --accent-soft: #F9E7A6;
+  --accent-ink: #7A5F00;
+  --on-accent: #1C1B19;
+  --ok: #2E6F47;
+  --ok-soft: #DDEFE3;
+  --bad: #A8322A;
+  --bad-soft: #F6DEDB;
+  --font: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A1917; --card: #26241F; --paper: #201E1B; --line: #3A3731;
+    --fg: #F3F1EA; --body: #DAD6CC; --muted: #A8A397;
+    --accent: #F2C31B; --accent-soft: #4A3E10; --accent-ink: #F2C31B; --on-accent: #1C1B19;
+    --ok: #79C995; --ok-soft: #1E3326; --bad: #F0958B; --bad-soft: #3B201D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1917; --card: #26241F; --paper: #201E1B; --line: #3A3731;
+  --fg: #F3F1EA; --body: #DAD6CC; --muted: #A8A397;
+  --accent: #F2C31B; --accent-soft: #4A3E10; --accent-ink: #F2C31B; --on-accent: #1C1B19;
+  --ok: #79C995; --ok-soft: #1E3326; --bad: #F0958B; --bad-soft: #3B201D;
+  color-scheme: dark;
+}
+html { font-size: 17px; }
+html.big { font-size: 23px; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font);
+  font-size: 1rem; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 4rem;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+.wrap { max-width: 52rem; margin: 0 auto; }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; }
+.eyebrow { font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink); }
+
+/* hlavička */
+.top { display: flex; flex-direction: column; gap: .5rem; padding-block: 2.2rem 1.2rem; }
+.top h1 { font-size: 2.3rem; font-weight: 300; letter-spacing: .02em; line-height: 1.1; }
+.top-row { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; justify-content: space-between; }
+.top p.lead { color: var(--body); max-width: 40rem; }
+
+/* záložky */
+.tabs-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: .6rem; border-bottom: 1px solid var(--line); }
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
+.tab {
+  flex: 0 0 auto; font: inherit; font-size: .92rem; font-weight: 600; white-space: nowrap;
+  padding: .5rem 1rem; border-radius: 2rem; border: 0; cursor: pointer;
+  background: var(--card); color: var(--muted); text-decoration: none;
+}
+.tab[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+.tab:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 2px; }
+
+/* sekce */
+main { display: flex; flex-direction: column; gap: 1.5rem; padding-top: 1.75rem; }
+.intro { display: flex; flex-direction: column; gap: .6rem; }
+.intro h2 { font-size: 1.9rem; font-weight: 300; line-height: 1.15; }
+.meta { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pill { font-size: .85rem; font-weight: 600; padding: .25rem .75rem; border-radius: 2rem; background: var(--accent); color: var(--on-accent); }
+.pill.soft { background: var(--card); color: var(--body); }
+.intro p { color: var(--body); max-width: 42rem; }
+.check-list { margin: 0; padding-left: 1.3rem; color: var(--body); }
+
+.card {
+  background: var(--card); border-top: 6px solid var(--accent); border-radius: 10px;
+  padding: 1.25rem 1.25rem 1.4rem; display: flex; flex-direction: column; gap: .9rem; min-width: 0;
+}
+.card h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.num { font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); white-space: nowrap; }
+
+/* specifikace */
+.spec-wrap { overflow-x: auto; }
+table.spec { width: 100%; border-collapse: collapse; background: var(--paper); border-radius: 8px; overflow: hidden; }
+table.spec th, table.spec td { text-align: left; vertical-align: top; padding: .55rem .8rem; border-bottom: 1px solid var(--line); }
+table.spec tr:last-child th, table.spec tr:last-child td { border-bottom: 0; }
+table.spec th { width: 28%; font-weight: 400; color: var(--muted); }
+table.spec tr.hl th, table.spec tr.hl td { background: var(--accent-soft); }
+table.spec tr.hl td { font-weight: 600; }
+
+/* formulářové prvky */
+label.field { display: flex; flex-direction: column; gap: .35rem; font-weight: 600; font-size: .92rem; color: var(--body); }
+input[type="text"], textarea, select {
+  font: inherit; font-weight: 400; color: var(--fg); background: var(--paper);
+  border: 1.5px solid var(--line); border-radius: 8px; padding: .6rem .75rem; width: 100%;
+}
+textarea { min-height: 5.5rem; resize: vertical; line-height: 1.45; }
+input.short { max-width: 9rem; font-size: 1.15rem; font-weight: 600; }
+.btn-row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+button.btn {
+  font: inherit; font-weight: 600; font-size: .95rem; cursor: pointer;
+  padding: .65rem 1.2rem; border-radius: 8px; border: 2px solid var(--accent); background: var(--accent); color: var(--on-accent);
+}
+button.btn.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+button.btn:disabled { opacity: .5; cursor: default; }
+.small-btn { font-size: .85rem !important; padding: .4rem .9rem !important; }
+
+/* test */
+.statements { display: flex; flex-direction: column; gap: .45rem; }
+.stmt {
+  display: grid; grid-template-columns: auto 1fr; gap: .2rem .75rem; align-items: start;
+  background: var(--paper); border-radius: 8px; padding: .65rem .8rem; border-left: 5px solid transparent; cursor: pointer;
+}
+.stmt input { width: 1.2rem; height: 1.2rem; margin-top: .2rem; accent-color: var(--accent-ink); }
+.stmt .letter { font-weight: 600; color: var(--accent-ink); margin-right: .35rem; }
+.stmt .verdict { grid-column: 2; font-size: .9rem; color: var(--body); }
+.stmt .verdict b { margin-right: .35rem; }
+.stmt.res-ok { border-left-color: var(--ok); background: var(--ok-soft); }
+.stmt.res-bad { border-left-color: var(--bad); background: var(--bad-soft); }
+.res-ok .verdict b { color: var(--ok); }
+.res-bad .verdict b { color: var(--bad); }
+
+.sub-item { display: flex; flex-direction: column; gap: .6rem; padding-top: .3rem; }
+.sub-item + .sub-item { border-top: 1px solid var(--line); padding-top: 1rem; }
+.sub-title { font-weight: 600; }
+
+/* řešení */
+.solution { display: flex; flex-direction: column; gap: .5rem; background: var(--paper); border-radius: 8px; padding: .9rem 1rem; border-left: 5px solid var(--accent); }
+.solution .lbl { font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+.solution p { color: var(--body); }
+.solution p.strong { color: var(--fg); font-weight: 600; }
+.result {
+  display: flex; flex-direction: column; gap: .3rem; padding: 1rem 1.2rem; border-radius: 10px;
+  background: var(--accent-soft); color: var(--fg);
+}
+.result .big-num { font-size: 1.8rem; font-weight: 300; font-variant-numeric: tabular-nums; }
+.verdict-tag { display: inline-block; font-size: .8rem; font-weight: 700; padding: .15rem .6rem; border-radius: 2rem; }
+.verdict-tag.ok { background: var(--ok-soft); color: var(--ok); }
+.verdict-tag.bad { background: var(--bad-soft); color: var(--bad); }
+
+/* poznej */
+.letter-badge { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 8px; background: var(--accent); color: var(--on-accent); font-size: 1.5rem; font-weight: 300; flex: 0 0 auto; }
+.poznej-head { display: flex; align-items: center; gap: .9rem; }
+.answer-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: end; }
+
+/* sestav */
+.self-check { display: flex; flex-direction: column; gap: .35rem; }
+.self-check label { display: flex; gap: .6rem; align-items: center; color: var(--body); cursor: pointer; }
+.self-check input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent-ink); }
+
+.note { font-size: .9rem; color: var(--muted); }
+footer.wrap { padding-top: 2.5rem; font-size: .85rem; color: var(--muted); }
+@media (max-width: 520px) {
+  html { font-size: 16px; }
+  html.big { font-size: 19px; }
+  .top h1 { font-size: 1.9rem; }
+  table.spec th { width: 34%; }
+  .tabs { gap: .4rem; }
+  .tab { font-size: .82rem; padding: .45rem .75rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .solution, .result { animation: fade .25s ease-out; }
+  @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Základy polygrafie · DAMU</p>
+    <div class="top-row">
+      <h1>Cvičení a testy</h1>
+      <button class="btn ghost small-btn" id="bigToggle" type="button" aria-pressed="false">Větší písmo</button>
+    </div>
+    <p class="lead">Vyberte cvičení, které právě děláme na přednášce. Vaše odpovědi zůstávají jen v tomto prohlížeči.</p>
+  </header>
+</div>
+
+<div class="tabs-bar">
+  <nav class="wrap tabs" aria-label="Cvičení">
+    <a class="tab" href="#test" data-view="test">Krátký test</a>
+    <a class="tab" href="#chyba" data-view="chyba">Najdi chybu</a>
+    <a class="tab" href="#poznej" data-view="poznej">Poznej tiskovinu</a>
+    <a class="tab" href="#sestav" data-view="sestav">Sestav specifikaci</a>
+  </nav>
+</div>
+
+<main class="wrap">
+  <!-- KRÁTKÝ TEST -->
+  <section id="view-test" data-view-panel="test">
+    <div class="intro">
+      <h2>Krátký test z prvních dvou přednášek</h2>
+      <div class="meta"><span class="pill">10 minut</span><span class="pill soft">samostatně</span><span class="pill soft">nanečisto</span></div>
+      <p>U otázek 1–4 zaškrtněte všechna pravdivá tvrzení, pravdivých může být víc. U otázek 5 a 6 napište odpověď. Na konci stiskněte Vyhodnotit.</p>
+    </div>
+    <div id="testBody" style="display:flex;flex-direction:column;gap:1.25rem;margin-top:1.25rem"></div>
+    <div class="btn-row" style="margin-top:1.25rem">
+      <button class="btn" id="testEval" type="button">Vyhodnotit test</button>
+      <button class="btn ghost" id="testReset" type="button">Začít znovu</button>
+    </div>
+    <div id="testResult" class="result" hidden style="margin-top:1rem"></div>
+  </section>
+
+  <!-- NAJDI CHYBU -->
+  <section id="view-chyba" data-view-panel="chyba" hidden>
+    <div class="intro">
+      <h2>Najdi chybu ve specifikaci</h2>
+      <div class="meta"><span class="pill">15 minut</span><span class="pill soft">ve dvojicích</span></div>
+      <p>V každé specifikaci je jedna chyba, nebo něco, co by vás mělo zarazit. Napište, co je špatně, a teprve potom si zobrazte řešení.</p>
+      <p class="sub-title">Na co se dívat</p>
+      <ol class="check-list">
+        <li>Hodí se papír k tomu, k čemu tiskovina slouží?</li>
+        <li>Je správně zapsaná barevnost?</li>
+        <li>Půjde to s touto vazbou vyrobit?</li>
+        <li>Půjde papír složit, aby v lomu nepraskal?</li>
+        <li>Je zušlechtění správně pojmenované?</li>
+      </ol>
+    </div>
+    <div id="chybaBody" style="display:flex;flex-direction:column;gap:1.25rem;margin-top:1.25rem"></div>
+  </section>
+
+  <!-- POZNEJ TISKOVINU -->
+  <section id="view-poznej" data-view-panel="poznej" hidden>
+    <div class="intro">
+      <h2>Poznej tiskovinu</h2>
+      <div class="meta"><span class="pill">15 minut</span><span class="pill soft">ve skupinách po třech</span></div>
+      <p>Na stole leží očíslované tiskoviny. Ke každé specifikaci A–F najděte tu pravou a zapište její číslo. Pozor, některé jsou si hodně podobné. Až budete mít všechna čísla, stiskněte Zkontrolovat.</p>
+    </div>
+    <div id="poznejBody" style="display:flex;flex-direction:column;gap:1.25rem;margin-top:1.25rem"></div>
+    <div class="btn-row" style="margin-top:1.25rem">
+      <button class="btn" id="poznejEval" type="button">Zkontrolovat</button>
+      <button class="btn ghost" id="poznejReset" type="button">Začít znovu</button>
+    </div>
+    <div id="poznejResult" class="result" hidden style="margin-top:1rem"></div>
+  </section>
+
+  <!-- SESTAV SPECIFIKACI -->
+  <section id="view-sestav" data-view-panel="sestav" hidden>
+    <div class="intro">
+      <h2>Sestav tiskovou specifikaci</h2>
+      <div class="meta"><span class="pill">17 minut</span><span class="pill soft">ve dvojicích</span></div>
+      <p>Dostanete jednu tiskovinu. Vyberte její číslo, zapište k ní co nejpřesnější specifikaci a pak ji porovnejte se správným řešením. Gramáž stačí odhadem.</p>
+    </div>
+    <div class="card" style="margin-top:1.25rem">
+      <label class="field" for="sestavPick">Číslo vaší tiskoviny
+        <select id="sestavPick" data-save></select>
+      </label>
+      <label class="field" for="sestavText">Vaše specifikace
+        <textarea id="sestavText" rows="9"></textarea>
+      </label>
+      <div class="btn-row">
+        <button class="btn" id="sestavShow" type="button">Porovnat se správným řešením</button>
+      </div>
+      <div id="sestavSolution" hidden style="display:flex;flex-direction:column;gap:1rem"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Základy polygrafie · DAMU, katedra produkce · ZS 2026/27</p>
+</footer>
+
+<script>
+(function () {
+  var store = {
+    get: function (k) { try { return window.localStorage.getItem('polygrafie:' + k); } catch (e) { return null; } },
+    set: function (k, v) { try { window.localStorage.setItem('polygrafie:' + k, v); } catch (e) {} },
+    del: function (k) { try { window.localStorage.removeItem('polygrafie:' + k); } catch (e) {} }
+  };
+  function el(tag, attrs, children) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === 'text') n.textContent = attrs[k];
+      else if (k === 'html') n.innerHTML = attrs[k];
+      else if (k === 'class') n.className = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    }
+    (children || []).forEach(function (c) { if (c) n.appendChild(c); });
+    return n;
+  }
+  function specTable(rows, hl) {
+    var t = el('table', { class: 'spec' });
+    rows.forEach(function (r, i) {
+      var tr = el('tr', hl === i ? { class: 'hl' } : null, [el('th', { scope: 'row', text: r[0] }), el('td', { text: r[1] })]);
+      t.appendChild(tr);
+    });
+    return el('div', { class: 'spec-wrap' }, [t]);
+  }
+  function bindSave(input, key) {
+    var v = store.get(key);
+    if (v !== null) { if (input.type === 'checkbox') input.checked = v === '1'; else input.value = v; }
+    input.addEventListener(input.type === 'checkbox' ? 'change' : 'input', function () {
+      store.set(key, input.type === 'checkbox' ? (input.checked ? '1' : '0') : input.value);
+    });
+  }
+
+  /* ---------- DATA ---------- */
+  var TEST_MC = [
+    { title: 'Tisková specifikace', items: [
+      ['Formát tiskoviny uvádíme v milimetrech ve tvaru šířka × výška.', true],
+      ['Náklad a zušlechtění si tiskárna doplní sama, do specifikace je psát nemusíte.', false, 'Bez nákladu tiskárna nespočítá cenu a zušlechtění, které ve specifikaci chybí, nevyrobí. Do specifikace raději víc než míň.'],
+      ['Vizitka i brožura potřebují ve specifikaci stejné údaje.', false, 'Vizitka nemá vazbu ani sklad. Čím složitější tiskovina, tím víc řádků specifikace.'],
+      ['U skládaných a vázaných tiskovin uvádíme složený i rozložený formát.', true],
+      ['U brožury se silnější obálkou uvádíme obálku a vnitřek na samostatných řádcích.', true]
+    ]},
+    { title: 'Barevnost', items: [
+      ['Zápis 4/1 znamená líc plnobarevný a rub černobílý.', true],
+      ['Když to jde, tiskneme raději přímými barvami Pantone než CMYKem.', false, 'Když to jde, tiskneme CMYKem. Přímé barvy jen na speciální odstíny, třeba zlatou nebo stříbrnou.'],
+      ['Tiskovinu s CMYK a jednou přímou barvou navíc na líci a s CMYK na rubu zapíšeme jako 5/4.', true],
+      ['Procesní černá (K) je tmavší než černá složená z CMYK.', false, 'Procesní černá K je spíš tmavě šedá. Tmavší je černá složená z CMYK.'],
+      ['Podklady v RGB se při převodu do CMYK mohou barevně změnit.', true]
+    ]},
+    { title: 'Materiály', items: [
+      ['Grafické papíry jsou levnější než běžné papíry a bývají hned skladem.', false, 'Grafické papíry jsou dražší a často se objednávají ze zahraničí.'],
+      ['Křída lesk (KL) i křída mat (KM) jsou natírané papíry.', true],
+      ['Ofset je nenatíraný papír, na který se dobře píše.', true],
+      ['Pro ofsetový a digitální tisk se papír dodává v rolích.', false, 'Ofset i digitál tisknou z archů. Z role tiskne velkoformát.'],
+      ['Citylightový papír (CLP) se používá na plakáty do prosvětlených vitrín.', true]
+    ]},
+    { title: 'Skládání a vazba', items: [
+      ['U vazby V2 musí být počet stran dělitelný čtyřmi.', false, 'Násobek 4 platí pro V1. U V2 stačí sudý počet stran.'],
+      ['U skládané tiskoviny uvádíme počet lomů i způsob skladu, třeba harmonika nebo do sebe.', true],
+      ['Atypický sklad je levnější, protože ho stroj složí rychleji.', false, 'Atypický sklad se skládá ručně, je dražší a trvá déle.'],
+      ['Papír nad 250 g je před skládáním vhodné bigovat.', true],
+      ['Vazba V1 je vhodná pro brožury zhruba do 100 stran.', true]
+    ]}
+  ];
+  var TEST_GUESS = [
+    { name: 'Tiskovina A', rows: [['formát', '594 × 841 mm'], ['materiál', '135g KL'], ['tisk', '4/0'], ['náklad', '100 ks']], answer: 'Plakát: velký formát, potisk jen z jedné strany.' },
+    { name: 'Tiskovina B', rows: [['formát', '148 × 105 mm'], ['materiál', 'pohlednicový karton 320g'], ['tisk', '4/1 (K)'], ['náklad', '300 ks']], answer: 'Pohlednice nebo podpisová karta: karton, rub potištěný jen černě.' },
+    { name: 'Tiskovina C', rows: [['formát', '150 × 240 mm (rozložené 300 × 240 mm)'], ['rozsah', '32 stran včetně obálky'], ['materiál', '150g KM'], ['tisk', '4/4'], ['vazba', 'V1'], ['náklad', '300 ks']], answer: 'Program k představení (brožura V1).' }
+  ];
+  var TEST_ERR = [
+    { name: 'Brožura', rows: [['formát', '210 × 210 mm (rozložené 420 × 210 mm)'], ['rozsah', '160 stran včetně obálky'], ['materiál', '135g KM'], ['tisk', '4/4'], ['vazba', 'V1'], ['náklad', '500 ks']], answer: 'V1 je vhodná zhruba do 100 stran. Na 160 stran zvolte lepenou vazbu V2.' },
+    { name: 'Plakát', rows: [['formát', '500 × 700 mm'], ['materiál', '150g KL'], ['tisk', '1/0 (CMYK)'], ['náklad', '200 ks']], answer: 'Plnobarevný tisk CMYK jsou čtyři barvy, správně 4/0. Zápis 1/0 znamená jednu barvu.' }
+  ];
+
+  var CHYBA = [
+    { name: 'Anketní lístek, diváci ho vyplní propiskou', rows: [['formát', '105 × 148 mm'], ['materiál', '135g KL'], ['tisk', '1/1 (K)'], ['náklad', '500 ks']], hl: 1,
+      err: 'Křída lesk je natíraný papír s hladkým povrchem, propiska na něm špatně píše. Na vyplňování se hodí nenatíraný ofset.',
+      fix: 'materiál 140g ofset' },
+    { name: 'Plakát do prosvětlené vitríny', rows: [['formát', '1185 × 1750 mm'], ['materiál', '150g KL'], ['tisk', '4/0'], ['náklad', '10 ks']], hl: 1,
+      err: 'Do prosvětlené vitríny patří citylightový papír (CLP), který je určený na prosvícení zezadu.',
+      fix: 'materiál 150g CLP' },
+    { name: 'Plakát se zlatou', rows: [['formát', '420 × 594 mm'], ['materiál', '150g KL'], ['tisk', '4/0 (CMYK + Pantone 871 C zlatá)'], ['náklad', '300 ks']], hl: 2,
+      err: 'CMYK a jedna přímá barva navíc jsou pět barev.',
+      fix: 'tisk 5/0 (CMYK + Pantone 871 C)' },
+    { name: 'Program, brožura V2', rows: [['formát', '148 × 210 mm (rozložené 296 × 210 mm)'], ['obálka', '4 strany, 300g KM + lamino mat 1/1, tisk 4/4'], ['vnitřek', '88 stran, 115g KM, tisk 4/4'], ['vazba', 'V2'], ['náklad', '500 ks']], hl: 1,
+      err: 'Lamino 1/1 je i na vnitřní straně obálky. U lepené vazby V2 by na něm nedrželo lepidlo.',
+      fix: 'obálka 300g KM + lamino mat 1/0 (jen zvenku)' },
+    { name: 'Leták z kartonu', rows: [['formát', 'rozložený 210 × 297 mm, složený 99 × 210 mm'], ['materiál', '300g KM + lamino mat 1/1'], ['tisk', '4/4'], ['sklad', '2 lomy, harmonika'], ['náklad', '1000 ks']], hl: 3,
+      err: 'Chybí big. Papír nad 250 g bez bigu v lomu praská, s laminem ještě víc.',
+      fix: 'sklad: 2 lomy s bigem, harmonika' },
+    { name: 'Vizitka se zlatým logem', rows: [['formát', '85 × 55 mm'], ['materiál', '350g KM'], ['tisk', '1/1 (K) + slepotisk zlatou fólií 1/0 (logo)'], ['náklad', '250 ks']], hl: 2,
+      err: 'Slepotisk je reliéf bez barvy. Zlaté logo je ražba fólií (horká ražba).',
+      fix: '1/1 (K) + ražba zlatou fólií 1/0 (logo)' }
+  ];
+
+  var POZNEJ = [
+    { k: 'A', rows: [['formát', 'A2 (420 × 594 mm)'], ['materiál', '150g CLP'], ['tisk', '1/0 (K)'], ['náklad', '30 ks']], ans: 6, hint: 'Tiskovina 5 má stejný formát i papír, ale jinou barevnost.' },
+    { k: 'B', rows: [['formát', 'rozložený 420 × 630 mm, sklad na 210 × 105 mm (= 1 svislý lom napůl, pak 5 vodorovných lomů na harmoniku)'], ['materiál', '115g KM'], ['tisk', '4/4'], ['náklad', '700 ks']], ans: 8, hint: 'Tiskovina 7 má stejný složený formát, ale jiný počet lomů.' },
+    { k: 'C', rows: [['formát', 'rozložený 570 × 210 mm, sklad na 95 × 210 mm (= 5 lomů na harmoniku)'], ['materiál', '140g ofset'], ['tisk', '1/1 (K)'], ['náklad', '1000 ks']], ans: 12, hint: 'Tiskoviny 11 a 13 mají jiný papír a barevnost.' },
+    { k: 'D', rows: [['formát', 'A6 (148 × 105 mm)'], ['materiál', '300g KM + lamino mat 1/0'], ['tisk', '4/1 (K)'], ['náklad', '300 ks']], ans: 2, hint: 'Tiskoviny 1, 9 a 10 mají jiný formát nebo jsou skládané.' },
+    { k: 'E', rows: [['formát', '105 × 148 mm (rozložené 210 × 148 mm)'], ['obálka', '4 strany, 120g Bindakote White, tisk 4/4'], ['vnitřek', '24 stran, 90g KL, tisk 4/4'], ['vazba', 'V1'], ['náklad', '1000 ks']], ans: 15, hint: 'Brožury 14, 16 a 17 mají jiný formát.' },
+    { k: 'F', rows: [['formát', 'A4 (210 × 297 mm), sklad na A6 105 × 148 mm (= 2 lomy, napůl a napůl)'], ['materiál', '135g KL'], ['tisk', '4/1 (K)'], ['náklad', '500 ks']], ans: 9, hint: 'Tiskovina 10 má jiný rozložený formát a počet lomů.' }
+  ];
+
+  var SESTAV = {
+    '1': { rows: [['formát', 'A5 (148 × 210 mm)'], ['materiál', 'pohlednicový karton 320g'], ['tisk', '4/1 (K)'], ['náklad', '500 ks']],
+      focus: 'Silný nenatíraný karton. Rub je potištěný jen černě, proto 4/1 (K).' },
+    '4': { rows: [['formát', '105 × 210 mm'], ['materiál', '300g Keaykolour Deep Black'], ['tisk', '1/1 bílá'], ['náklad', '400 ks']],
+      focus: 'Černý grafický papír, tisk bílou barvou z obou stran: 1/1 bílá. Bílou CMYKem vytisknout nejde.' },
+    '7': { rows: [['formát', 'rozložený 420 × 525 mm, sklad na 210 × 105 mm (= 1 svislý lom napůl, pak 4 vodorovné lomy na harmoniku)'], ['materiál', '115g KM'], ['tisk', '4/4'], ['náklad', '300 ks']],
+      focus: 'Rozložte a spočítejte panely: 2 sloupce × 5 řad po 210 × 105 mm. Do specifikace patří i pořadí lomů.' },
+    '14': { rows: [['formát', '140 × 125 mm (rozložený 280 × 125 mm)'], ['obálka', '4 strany, 300g KM, tisk 4/4'], ['vnitřek', '36 stran, 135g KM, tisk 4/4'], ['vazba', 'V1'], ['náklad', '500 ks']],
+      focus: 'Obálka je z jiného papíru než vnitřek, proto má vlastní řádek. Celkem 40 stran, dělitelné 4.' },
+    '17': { rows: [['formát', '140 × 160 mm (rozložené 280 × 160 mm)'], ['obálka', '4 strany, 300g ofset, tisk 4/0'], ['vnitřek', '72 stran, z toho 60 stran 1/1 (K) a uprostřed vazby 12 stran 4/4, 100g ofset'], ['vazba', 'V1'], ['náklad', '500 ks']],
+      focus: 'Vnitřek kombinuje černobílé a barevné strany. Obálka je potištěná jen zvenku: 4/0.' },
+    '18': { rows: [['formát', '225 × 300 mm (rozložené 450 × 300 mm)'], ['obálka', '4 strany, 300g ofset + lamino mat 1/0, tisk 4/4'], ['vnitřek', '200 stran, 120g ofset, tisk 4/4'], ['vazba', 'V2'], ['náklad', '1000 ks']],
+      focus: 'Lepená vazba V2. Lamino jen na vnější straně obálky: 1/0.' }
+  };
+  var SESTAV_TEMPLATE = 'formát: \nmateriál: \ntisk: \nsklad / vazba: \nrozsah: \nzušlechtění: \nnáklad: ';
+
+  /* ---------- KRÁTKÝ TEST ---------- */
+  var testBody = document.getElementById('testBody');
+  var letters = 'abcde';
+  var mcInputs = [];
+  TEST_MC.forEach(function (q, qi) {
+    var card = el('div', { class: 'card' });
+    card.appendChild(el('div', { class: 'card-head' }, [el('h3', { text: (qi + 1) + ' · ' + q.title }), el('span', { class: 'num', text: 'vyberte pravdivá' })]));
+    var list = el('div', { class: 'statements' });
+    q.items.forEach(function (s, si) {
+      var id = 'q' + (qi + 1) + letters[si];
+      var input = el('input', { type: 'checkbox', id: id });
+      var lab = el('label', { class: 'stmt', for: id });
+      lab.appendChild(input);
+      lab.appendChild(el('span', { html: '<span class="letter">' + letters[si] + ')</span>' }, [document.createTextNode(s[0])]));
+      var verdict = el('span', { class: 'verdict' }); verdict.hidden = true;
+      lab.appendChild(verdict);
+      list.appendChild(lab);
+      bindSave(input, 'test:' + id);
+      mcInputs.push({ input: input, row: lab, verdict: verdict, ok: s[1], why: s[2] });
+    });
+    card.appendChild(list);
+    testBody.appendChild(card);
+  });
+  var textAnswers = [];
+  function textBlock(title, numLabel, data, prompt, prefix) {
+    var card = el('div', { class: 'card' });
+    card.appendChild(el('div', { class: 'card-head' }, [el('h3', { text: title }), el('span', { class: 'num', text: numLabel })]));
+    data.forEach(function (it, i) {
+      var id = prefix + (i + 1);
+      var sub = el('div', { class: 'sub-item' });
+      sub.appendChild(el('p', { class: 'sub-title', text: it.name }));
+      sub.appendChild(specTable(it.rows));
+      var input = el('input', { type: 'text', id: id, autocomplete: 'off' });
+      sub.appendChild(el('label', { class: 'field', for: id }, [document.createTextNode(prompt), input]));
+      var sol = el('div', { class: 'solution' }, [el('span', { class: 'lbl', text: 'Vzorová odpověď' }), el('p', { class: 'strong', text: it.answer })]);
+      sol.hidden = true;
+      sub.appendChild(sol);
+      bindSave(input, 'test:' + id);
+      textAnswers.push({ input: input, sol: sol });
+      card.appendChild(sub);
+    });
+    testBody.appendChild(card);
+  }
+  textBlock('5 · Odhadni tiskovinu', 'napište', TEST_GUESS, 'Jedná se o', 'q5');
+  textBlock('6 · Najdi chybu', 'napište', TEST_ERR, 'Co je špatně?', 'q6');
+
+  var testResult = document.getElementById('testResult');
+  function evalTest() {
+    var good = 0;
+    mcInputs.forEach(function (m) {
+      var right = m.input.checked === m.ok;
+      if (right) good++;
+      m.row.classList.toggle('res-ok', right);
+      m.row.classList.toggle('res-bad', !right);
+      m.verdict.innerHTML = '';
+      var b = document.createElement('b'); b.textContent = right ? 'Správně.' : 'Chyba.';
+      m.verdict.appendChild(b);
+      m.verdict.appendChild(document.createTextNode(m.ok ? 'Tvrzení je pravdivé.' : ('Tvrzení je nepravdivé. ' + (m.why || ''))));
+      m.verdict.hidden = false;
+      m.input.disabled = true;
+    });
+    textAnswers.forEach(function (t) { t.sol.hidden = false; });
+    testResult.innerHTML = '';
+    testResult.appendChild(el('span', { class: 'big-num', text: good + ' z ' + mcInputs.length }));
+    testResult.appendChild(el('p', { text: 'správně posouzených tvrzení v otázkách 1–4. U otázek 5 a 6 porovnejte své odpovědi se vzorovými.' }));
+    testResult.hidden = false;
+    store.set('test:done', '1');
+    testResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function resetTest() {
+    mcInputs.forEach(function (m) {
+      m.input.checked = false; m.input.disabled = false;
+      m.row.classList.remove('res-ok', 'res-bad'); m.verdict.hidden = true;
+      store.del('test:' + m.input.id);
+    });
+    textAnswers.forEach(function (t) { t.input.value = ''; t.sol.hidden = true; store.del('test:' + t.input.id); });
+    testResult.hidden = true; store.del('test:done');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.getElementById('testEval').addEventListener('click', evalTest);
+  document.getElementById('testReset').addEventListener('click', resetTest);
+  if (store.get('test:done') === '1') evalTest();
+
+  /* ---------- NAJDI CHYBU ---------- */
+  var chybaBody = document.getElementById('chybaBody');
+  CHYBA.forEach(function (it, i) {
+    var card = el('div', { class: 'card' });
+    card.appendChild(el('div', { class: 'card-head' }, [el('h3', { text: it.name }), el('span', { class: 'num', text: (i + 1) + ' / ' + CHYBA.length })]));
+    var plain = specTable(it.rows), marked = specTable(it.rows, it.hl);
+    marked.hidden = true;
+    card.appendChild(plain); card.appendChild(marked);
+    var id = 'chyba' + (i + 1);
+    var ta = el('textarea', { id: id, rows: '3' });
+    card.appendChild(el('label', { class: 'field', for: id }, [document.createTextNode('Co je špatně?'), ta]));
+    bindSave(ta, id);
+    var sol = el('div', { class: 'solution' }, [
+      el('span', { class: 'lbl', text: 'Chyba' }), el('p', { text: it.err }),
+      el('span', { class: 'lbl', text: 'Správně' }), el('p', { class: 'strong', text: it.fix })
+    ]);
+    sol.hidden = true;
+    var btn = el('button', { class: 'btn ghost small-btn', type: 'button', text: 'Ukázat řešení' });
+    btn.addEventListener('click', function () {
+      var show = sol.hidden;
+      sol.hidden = !show; marked.hidden = !show; plain.hidden = show;
+      btn.textContent = show ? 'Skrýt řešení' : 'Ukázat řešení';
+    });
+    card.appendChild(el('div', { class: 'btn-row' }, [btn]));
+    card.appendChild(sol);
+    chybaBody.appendChild(card);
+  });
+
+  /* ---------- POZNEJ TISKOVINU ---------- */
+  var poznejBody = document.getElementById('poznejBody');
+  var pzn = [];
+  POZNEJ.forEach(function (it) {
+    var card = el('div', { class: 'card' });
+    card.appendChild(el('div', { class: 'poznej-head' }, [el('span', { class: 'letter-badge', text: it.k }), el('h3', { text: 'Specifikace ' + it.k })]));
+    card.appendChild(specTable(it.rows));
+    var id = 'poznej' + it.k;
+    var input = el('input', { type: 'text', id: id, inputmode: 'numeric', autocomplete: 'off', class: 'short', placeholder: 'č.' });
+    var tag = el('span', { class: 'verdict-tag' }); tag.hidden = true;
+    card.appendChild(el('div', { class: 'answer-row' }, [el('label', { class: 'field', for: id }, [document.createTextNode('Číslo tiskoviny'), input]), tag]));
+    var sol = el('div', { class: 'solution' }); sol.hidden = true;
+    card.appendChild(sol);
+    bindSave(input, id);
+    pzn.push({ it: it, input: input, tag: tag, sol: sol });
+    poznejBody.appendChild(card);
+  });
+  var poznejResult = document.getElementById('poznejResult');
+  function evalPoznej() {
+    var good = 0;
+    pzn.forEach(function (p) {
+      var v = parseInt(p.input.value, 10);
+      var right = v === p.it.ans;
+      if (right) good++;
+      p.tag.className = 'verdict-tag ' + (right ? 'ok' : 'bad');
+      p.tag.textContent = right ? 'Správně' : 'Ne';
+      p.tag.hidden = false;
+      p.sol.innerHTML = '';
+      p.sol.appendChild(el('span', { class: 'lbl', text: 'Řešení' }));
+      p.sol.appendChild(el('p', { class: 'strong', text: 'Tiskovina ' + p.it.ans }));
+      p.sol.appendChild(el('p', { text: p.it.hint }));
+      p.sol.hidden = false;
+    });
+    poznejResult.innerHTML = '';
+    poznejResult.appendChild(el('span', { class: 'big-num', text: good + ' z ' + pzn.length }));
+    poznejResult.appendChild(el('p', { text: 'správně poznaných tiskovin.' }));
+    poznejResult.hidden = false;
+    store.set('poznej:done', '1');
+  }
+  function resetPoznej() {
+    pzn.forEach(function (p) { p.input.value = ''; p.tag.hidden = true; p.sol.hidden = true; store.del(p.input.id); });
+    poznejResult.hidden = true; store.del('poznej:done');
+  }
+  document.getElementById('poznejEval').addEventListener('click', evalPoznej);
+  document.getElementById('poznejReset').addEventListener('click', resetPoznej);
+  if (store.get('poznej:done') === '1') evalPoznej();
+
+  /* ---------- SESTAV SPECIFIKACI ---------- */
+  var pick = document.getElementById('sestavPick');
+  pick.appendChild(el('option', { value: '', text: 'Vyberte číslo' }));
+  Object.keys(SESTAV).forEach(function (k) { pick.appendChild(el('option', { value: k, text: 'Tiskovina ' + k })); });
+  var text = document.getElementById('sestavText');
+  var solBox = document.getElementById('sestavSolution');
+  var CHECKS = ['Formát, u skládaných a vázaných i rozložený', 'Materiál: natíraný, nebo nenatíraný papír', 'Barevnost líce i rubu', 'Sklad, nebo vazba a rozsah', 'Zušlechtění, pokud ho tiskovina má'];
+  function loadSestav() {
+    var k = pick.value;
+    var saved = k ? store.get('sestav:text:' + k) : null;
+    text.value = saved !== null ? saved : SESTAV_TEMPLATE;
+    text.disabled = !k;
+    solBox.hidden = true;
+  }
+  function showSestav() {
+    var k = pick.value;
+    solBox.innerHTML = '';
+    if (!k) {
+      solBox.appendChild(el('p', { class: 'note', text: 'Nejdřív vyberte číslo své tiskoviny.' }));
+      solBox.hidden = false; return;
+    }
+    var it = SESTAV[k];
+    solBox.appendChild(el('p', { class: 'lbl eyebrow', text: 'Správná specifikace · tiskovina ' + k }));
+    solBox.appendChild(specTable(it.rows));
+    solBox.appendChild(el('div', { class: 'solution' }, [el('span', { class: 'lbl', text: 'Na co se zaměřit' }), el('p', { text: it.focus })]));
+    var sc = el('div', { class: 'self-check' }, [el('p', { class: 'sub-title', text: 'Co máte správně?' })]);
+    var count = el('p', { class: 'note' });
+    var boxes = CHECKS.map(function (c, i) {
+      var id = 'sc' + k + '-' + i;
+      var cb = el('input', { type: 'checkbox', id: id });
+      bindSave(cb, 'sestav:' + id);
+      cb.addEventListener('change', upd);
+      sc.appendChild(el('label', { for: id }, [cb, document.createTextNode(c)]));
+      return cb;
+    });
+    function upd() { count.textContent = 'Máte ' + boxes.filter(function (b) { return b.checked; }).length + ' z ' + boxes.length + '.'; }
+    sc.appendChild(count); upd();
+    solBox.appendChild(sc);
+    solBox.hidden = false;
+  }
+  var savedPick = store.get('sestav:pick');
+  if (savedPick && SESTAV[savedPick]) pick.value = savedPick;
+  loadSestav();
+  pick.addEventListener('change', function () { store.set('sestav:pick', pick.value); loadSestav(); });
+  text.addEventListener('input', function () { if (pick.value) store.set('sestav:text:' + pick.value, text.value); });
+  document.getElementById('sestavShow').addEventListener('click', showSestav);
+
+  /* ---------- ZÁLOŽKY A PÍSMO ---------- */
+  var views = ['test', 'chyba', 'poznej', 'sestav'];
+  function route() {
+    var h = (location.hash || '').replace('#', '');
+    if (views.indexOf(h) < 0) h = 'test';
+    views.forEach(function (v) {
+      document.querySelector('[data-view-panel="' + v + '"]').hidden = v !== h;
+      var t = document.querySelector('.tab[data-view="' + v + '"]');
+      if (v === h) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('hashchange', function () { route(); window.scrollTo({ top: 0 }); });
+  route();
+  var bigBtn = document.getElementById('bigToggle');
+  function setBig(on) { document.documentElement.classList.toggle('big', on); bigBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); bigBtn.textContent = on ? 'Menší písmo' : 'Větší písmo'; }
+  setBig(store.get('big') === '1');
+  bigBtn.addEventListener('click', function () { var on = !document.documentElement.classList.contains('big'); setBig(on); store.set('big', on ? '1' : '0'); });
+})();
+</script>
+
+</body></html>
